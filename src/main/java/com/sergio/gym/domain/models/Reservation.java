@@ -2,6 +2,7 @@ package com.sergio.gym.domain.models;
 
 
 import com.sergio.gym.domain.enums.ReservationStatus;
+import lombok.Builder;
 import lombok.Getter;
 
 import java.time.Instant;
