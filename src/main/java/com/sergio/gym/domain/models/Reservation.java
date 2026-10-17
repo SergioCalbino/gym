@@ -17,7 +17,7 @@ public class Reservation {
     private ReservationStatus status;
 
 
-    public Reservation(UUID id, UUID memberId, UUID gymClassId, Instant createdAt) {
+    private Reservation(UUID id, UUID memberId, UUID gymClassId, Instant createdAt, ReservationStatus status) {
         if (id == null ) {
             throw new IllegalArgumentException("Id must not be null");
         }
@@ -39,6 +39,15 @@ public class Reservation {
         this.createdAt = createdAt;
 
         this.status = ReservationStatus.ACTIVE;
+    }
+
+
+    public Reservation(UUID id, UUID memberId, UUID gymClassId, Instant createdAt) {
+        this(id, memberId, gymClassId, createdAt, ReservationStatus.ACTIVE);
+    }
+
+    public static Reservation restore (UUID id, UUID memberId, UUID gymClassId, Instant createdAt, ReservationStatus status) {
+        return new Reservation(id, memberId, gymClassId, createdAt, status);
     }
 
     public void cancel() {

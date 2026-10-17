@@ -13,7 +13,7 @@ public class GymClass {
     private final int capacity;
     private int occupiedSpots;
 
-    public GymClass(UUID id, String name, int capacity) {
+    private GymClass(UUID id, String name, int capacity, int occupiedSpots) {
         if (capacity <= 0) {
             throw new IllegalArgumentException("Capacity must be greater than zero");
         }
@@ -26,8 +26,17 @@ public class GymClass {
         this.id = id;
         this.name = name;
         this.capacity = capacity;
-        this.occupiedSpots = 0;
+        this.occupiedSpots = occupiedSpots;
     }
+    public GymClass(UUID id, String name, int capacity) {
+        this(id, name, capacity, 0);   // llama al privado con 0 ocupados
+    }
+
+    // Traer una que ya existe en la base, con su estado
+    public static GymClass restore(UUID id, String name, int capacity, int occupiedSpots) {
+        return new GymClass(id, name, capacity, occupiedSpots);
+    }
+
 
     public void reserveSpot() {
         if (occupiedSpots >= capacity)  {
@@ -46,6 +55,7 @@ public class GymClass {
     public int availableSpots() {
         return capacity - occupiedSpots;
     }
+
 
 
 }
