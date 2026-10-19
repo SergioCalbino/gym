@@ -1,5 +1,6 @@
 package com.sergio.gym.infrastructure.in.web;
 
+import com.sergio.gym.domain.exceptions.AlreadyReservedException;
 import com.sergio.gym.domain.exceptions.ClassFullException;
 import com.sergio.gym.domain.exceptions.GymClassNotFoundException;
 import org.springframework.http.HttpStatus;
@@ -23,6 +24,11 @@ public class GlobalExceptionHandler {
     @ExceptionHandler(IllegalArgumentException.class)
     public ProblemDetail handleIllegalArgumentException(IllegalArgumentException ex) {
         return ProblemDetail.forStatusAndDetail(HttpStatus.BAD_REQUEST, ex.getMessage());
+    }
+
+    @ExceptionHandler(AlreadyReservedException.class)
+    public ProblemDetail handleAlreadyReservedException(AlreadyReservedException ex) {
+        return ProblemDetail.forStatusAndDetail(HttpStatus.CONFLICT, ex.getMessage());
     }
 
 }
