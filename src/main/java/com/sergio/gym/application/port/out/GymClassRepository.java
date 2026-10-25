@@ -8,4 +8,5 @@ import java.util.UUID;
 public interface GymClassRepository {
     Optional<GymClass> findById(UUID id);
     void save(GymClass gymClass);
+    Optional<GymClass> findByIdForUpdate(UUID id);
 }

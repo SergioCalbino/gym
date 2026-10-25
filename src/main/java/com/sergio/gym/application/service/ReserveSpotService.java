@@ -27,7 +27,7 @@ public class ReserveSpotService implements ReserveSpotUseCase {
 
     @Override
     public Reservation reserve(UUID memberId, UUID gymClassId) {
-        GymClass gymClass = gymClassRepository.findById(gymClassId)
+        GymClass gymClass = gymClassRepository.findByIdForUpdate(gymClassId)
                 .orElseThrow(() -> new GymClassNotFoundException("Gym class not found" + gymClassId));
 
         gymClass.reserveSpot();

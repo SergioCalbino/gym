@@ -27,4 +27,11 @@ public class GymClassRepositoryAdapter implements GymClassRepository {
         springDataGymClassRepository.save(GymClassMapper.toEntity(gymClass));
 
     }
+
+    @Override
+    public Optional<GymClass> findByIdForUpdate(UUID id) {
+        Optional<GymClass> gymClass = springDataGymClassRepository.findByIdForUpdate(id)
+                .map((GymClassMapper::toDomain));
+        return gymClass;
+    }
 }

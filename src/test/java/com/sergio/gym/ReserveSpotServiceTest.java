@@ -49,7 +49,7 @@ class ReserveSpotServiceTest {
     @Test
     void reserveCreatesAnActiveReservation() {
         GymClass gymClass = new GymClass(CLASS_ID, "Spinning", 2);
-        when(gymClassRepository.findById(CLASS_ID)).thenReturn(Optional.of(gymClass));
+        when(gymClassRepository.findByIdForUpdate(CLASS_ID)).thenReturn(Optional.of(gymClass));
 
         Reservation reservation = service.reserve(MEMBER_ID, CLASS_ID);
 
@@ -62,7 +62,7 @@ class ReserveSpotServiceTest {
     @Test
     void reserveOccupiesOneSpotAndSavesTheClass() {
         GymClass gymClass = new GymClass(CLASS_ID, "Spinning", 2);
-        when(gymClassRepository.findById(CLASS_ID)).thenReturn(Optional.of(gymClass));
+        when(gymClassRepository.findByIdForUpdate(CLASS_ID)).thenReturn(Optional.of(gymClass));
 
         service.reserve(MEMBER_ID, CLASS_ID);
 
@@ -73,7 +73,7 @@ class ReserveSpotServiceTest {
     @Test
     void reserveSavesTheReservationItReturns() {
         GymClass gymClass = new GymClass(CLASS_ID, "Spinning", 2);
-        when(gymClassRepository.findById(CLASS_ID)).thenReturn(Optional.of(gymClass));
+        when(gymClassRepository.findByIdForUpdate(CLASS_ID)).thenReturn(Optional.of(gymClass));
 
         Reservation returned = service.reserve(MEMBER_ID, CLASS_ID);
 
@@ -84,7 +84,7 @@ class ReserveSpotServiceTest {
 
     @Test
     void reservingANonExistingClassThrowsNotFound() {
-        when(gymClassRepository.findById(CLASS_ID)).thenReturn(Optional.empty());
+        when(gymClassRepository.findByIdForUpdate(CLASS_ID)).thenReturn(Optional.empty());
 
         assertThrows(GymClassNotFoundException.class, () -> service.reserve(MEMBER_ID, CLASS_ID));
 
@@ -95,7 +95,7 @@ class ReserveSpotServiceTest {
     void reservingAFullClassThrowsAndSavesNothing() {
         GymClass fullClass = new GymClass(CLASS_ID, "Spinning", 1);
         fullClass.reserveSpot();
-        when(gymClassRepository.findById(CLASS_ID)).thenReturn(Optional.of(fullClass));
+        when(gymClassRepository.findByIdForUpdate(CLASS_ID)).thenReturn(Optional.of(fullClass));
 
         assertThrows(ClassFullException.class, () -> service.reserve(MEMBER_ID, CLASS_ID));
 
