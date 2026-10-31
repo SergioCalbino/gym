@@ -27,16 +27,16 @@ public class ReserveSpotService implements ReserveSpotUseCase {
 
     @Override
     public Reservation reserve(UUID memberId, UUID gymClassId) {
-        GymClass gymClass = gymClassRepository.findByIdForUpdate(gymClassId)
-                .orElseThrow(() -> new GymClassNotFoundException("Gym class not found" + gymClassId));
+        GymClass gymClass = gymClassRepository.findByIdForUpdate(gymClassId) //Busca la clase y la bloqued, si llegan 10 a la vez, 9 esperan aca (Concurrencia)
+                .orElseThrow(() -> new GymClassNotFoundException("Gym class not found " + gymClassId));
 
-        gymClass.reserveSpot();
+        gymClass.reserveSpot(); // 2. el que tiene el turno pregunta: ¿hay lugar? (con el dato actualizado)
 
-        gymClassRepository.save(gymClass);
+        gymClassRepository.save(gymClass); // 3. guarda el cupo ocupado
 
         Reservation reservation = new Reservation(UUID.randomUUID(), memberId, gymClassId, Instant.now(clock));
 
-        reservationRepository.save(reservation);
+        reservationRepository.save(reservation); // 4. guarda la reserva
 
         return reservation;
     }

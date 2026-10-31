@@ -7,6 +7,9 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.stereotype.Repository;
 
+import java.util.Optional;
+import java.util.UUID;
+
 @Repository
 @RequiredArgsConstructor
 public class ReservationRepositoryAdapter implements ReservationRepository {
@@ -25,5 +28,12 @@ public class ReservationRepositoryAdapter implements ReservationRepository {
         }
 
 
+    }
+
+    @Override
+    public Optional<Reservation> findByIdForUpdate(UUID id) {
+        Optional<Reservation> reservation = springDataReservationRepository.findByIdForUpdate(id)
+                .map(reservationEntity -> ReservationMapper.toDomain(reservationEntity));
+        return reservation;
     }
 }
