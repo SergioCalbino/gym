@@ -3,6 +3,7 @@ package com.sergio.gym.infrastructure.in.web;
 import com.sergio.gym.domain.exceptions.AlreadyReservedException;
 import com.sergio.gym.domain.exceptions.ClassFullException;
 import com.sergio.gym.domain.exceptions.GymClassNotFoundException;
+import com.sergio.gym.domain.exceptions.ReservationNotFoundException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ProblemDetail;
 import org.springframework.web.bind.annotation.ExceptionHandler;
@@ -29,6 +30,11 @@ public class GlobalExceptionHandler {
     @ExceptionHandler(AlreadyReservedException.class)
     public ProblemDetail handleAlreadyReservedException(AlreadyReservedException ex) {
         return ProblemDetail.forStatusAndDetail(HttpStatus.CONFLICT, ex.getMessage());
+    }
+
+    @ExceptionHandler(ReservationNotFoundException.class)
+    public ProblemDetail handleReservationNotFoundException(ReservationNotFoundException ex) {
+        return ProblemDetail.forStatusAndDetail(HttpStatus.NOT_FOUND, ex.getMessage());
     }
 
 }

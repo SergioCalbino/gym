@@ -38,7 +38,11 @@ public class Reservation {
         }
         this.createdAt = createdAt;
 
-        this.status = ReservationStatus.ACTIVE;
+        if (status == null ) {
+            throw new IllegalArgumentException("ReservationStatus must not be null");
+        }
+
+        this.status = status;
     }
 
 
