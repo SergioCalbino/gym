@@ -1,5 +1,6 @@
 package com.sergio.gym.infrastructure.out.persistence.gymclass;
 
+import com.sergio.gym.application.port.in.CreateGymClassCommand;
 import com.sergio.gym.application.port.out.GymClassRepository;
 import com.sergio.gym.domain.models.GymClass;
 import lombok.RequiredArgsConstructor;
@@ -34,4 +35,6 @@ public class GymClassRepositoryAdapter implements GymClassRepository {
                 .map((GymClassMapper::toDomain));
         return gymClass;
     }
+
+
 }

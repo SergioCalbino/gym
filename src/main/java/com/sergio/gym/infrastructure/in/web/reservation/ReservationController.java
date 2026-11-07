@@ -18,6 +18,7 @@ public class ReservationController {
 
     private final ReserveSpotUseCase reserveSpotUseCase;
     private final CancelReservationUseCase cancelReservationUseCase;
+
     
 
 
@@ -35,6 +36,9 @@ public class ReservationController {
         cancelReservationUseCase.cancelReservation(reservationId);
 
     }
+
+
+
 
 
 

@@ -1,6 +1,7 @@
 package com.sergio.gym.infrastructure.out.persistence.gymclass;
 
 
+import com.sergio.gym.application.port.in.CreateGymClassCommand;
 import jakarta.persistence.LockModeType;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Lock;
@@ -14,4 +15,5 @@ public interface SpringDataGymClassRepository extends JpaRepository<GymClassEnti
     @Lock(LockModeType.PESSIMISTIC_WRITE) //Para concurrencia de escritura en db
     @Query("SELECT g FROM GymClassEntity g WHERE g.id = :id")
     Optional<GymClassEntity> findByIdForUpdate(@Param("id") UUID id);
+
 }
