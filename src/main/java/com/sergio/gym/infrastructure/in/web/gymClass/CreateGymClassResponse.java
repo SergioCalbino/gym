@@ -15,7 +15,7 @@ public record CreateGymClassResponse(
         return new CreateGymClassResponse(
                 gymClass.getId(),
                 gymClass.getName(),
-                gymClass.getCapacity(),
+                gymClass.getCapacity().value(),
                 gymClass.availableSpots()
 
 

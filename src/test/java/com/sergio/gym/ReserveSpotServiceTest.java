@@ -9,6 +9,7 @@ import com.sergio.gym.domain.exceptions.ClassFullException;
 import com.sergio.gym.domain.exceptions.GymClassNotFoundException;
 import com.sergio.gym.domain.models.GymClass;
 import com.sergio.gym.domain.models.Reservation;
+import com.sergio.gym.domain.valueobjects.Capacity;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -48,7 +49,7 @@ class ReserveSpotServiceTest {
 
     @Test
     void reserveCreatesAnActiveReservation() {
-        GymClass gymClass = new GymClass(CLASS_ID, "Spinning", 2);
+        GymClass gymClass = new GymClass(CLASS_ID, "Spinning", new Capacity(2));
         when(gymClassRepository.findByIdForUpdate(CLASS_ID)).thenReturn(Optional.of(gymClass));
 
         Reservation reservation = service.reserve(MEMBER_ID, CLASS_ID);
@@ -61,7 +62,7 @@ class ReserveSpotServiceTest {
 
     @Test
     void reserveOccupiesOneSpotAndSavesTheClass() {
-        GymClass gymClass = new GymClass(CLASS_ID, "Spinning", 2);
+        GymClass gymClass = new GymClass(CLASS_ID, "Spinning", new Capacity(2));
         when(gymClassRepository.findByIdForUpdate(CLASS_ID)).thenReturn(Optional.of(gymClass));
 
         service.reserve(MEMBER_ID, CLASS_ID);
@@ -72,7 +73,7 @@ class ReserveSpotServiceTest {
 
     @Test
     void reserveSavesTheReservationItReturns() {
-        GymClass gymClass = new GymClass(CLASS_ID, "Spinning", 2);
+        GymClass gymClass = new GymClass(CLASS_ID, "Spinning", new Capacity(2));
         when(gymClassRepository.findByIdForUpdate(CLASS_ID)).thenReturn(Optional.of(gymClass));
 
         Reservation returned = service.reserve(MEMBER_ID, CLASS_ID);
@@ -93,7 +94,7 @@ class ReserveSpotServiceTest {
 
     @Test
     void reservingAFullClassThrowsAndSavesNothing() {
-        GymClass fullClass = new GymClass(CLASS_ID, "Spinning", 1);
+        GymClass fullClass = new GymClass(CLASS_ID, "Spinning", new Capacity(1));
         fullClass.reserveSpot();
         when(gymClassRepository.findByIdForUpdate(CLASS_ID)).thenReturn(Optional.of(fullClass));
 

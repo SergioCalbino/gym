@@ -7,6 +7,7 @@ import com.sergio.gym.application.port.in.CreateGymClassUseCase;
 import com.sergio.gym.application.port.out.GymClassRepository;
 import com.sergio.gym.domain.models.GymClass;
 
+import com.sergio.gym.domain.valueobjects.Capacity;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -24,7 +25,7 @@ public class CreateGymClassService implements CreateGymClassUseCase {
 
     @Override
     public GymClass create(CreateGymClassCommand command) {
-        GymClass gymClass = new GymClass(UUID.randomUUID(), command.name(),command.capacity());
+        GymClass gymClass = new GymClass(UUID.randomUUID(), command.name(), new Capacity(command.capacity()));
         gymClassRepository.save(gymClass);
         return gymClass;
     }

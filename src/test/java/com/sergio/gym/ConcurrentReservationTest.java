@@ -3,6 +3,7 @@ package com.sergio.gym;
 import com.sergio.gym.application.port.in.ReserveSpotUseCase;
 import com.sergio.gym.application.port.out.GymClassRepository;
 import com.sergio.gym.domain.models.GymClass;
+import com.sergio.gym.domain.valueobjects.Capacity;
 import com.sergio.gym.infrastructure.out.persistence.reservation.SpringDataReservationRepository;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -26,7 +27,7 @@ class ConcurrentReservationTest {
     @Test
     void tenMembersRacingForTheLastSpotOnlyOneWins() throws Exception {
         UUID classId = UUID.randomUUID();
-        gymClassRepository.save(new GymClass(classId, "Spinning", 1));   // un solo lugar
+        gymClassRepository.save(new GymClass(classId, "Spinning", new Capacity(1)));   // un solo lugar
 
         Queue<Throwable> errors = new ConcurrentLinkedQueue<>();
         ExecutorService pool = Executors.newFixedThreadPool(10);

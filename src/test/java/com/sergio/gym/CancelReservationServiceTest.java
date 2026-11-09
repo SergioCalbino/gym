@@ -7,6 +7,7 @@ import com.sergio.gym.domain.enums.ReservationStatus;
 import com.sergio.gym.domain.exceptions.ReservationNotFoundException;
 import com.sergio.gym.domain.models.GymClass;
 import com.sergio.gym.domain.models.Reservation;
+import com.sergio.gym.domain.valueobjects.Capacity;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -42,7 +43,7 @@ class CancelReservationServiceTest {
     @Test
     void cancellingAnActiveReservationCancelsItAndReleasesTheSpot() {
         Reservation reservation = new Reservation(RESERVATION_ID, MEMBER_ID, CLASS_ID, NOW);
-        GymClass gymClass = new GymClass(CLASS_ID, "Spinning", 2);
+        GymClass gymClass = new GymClass(CLASS_ID, "Spinning", new Capacity(2));
         gymClass.reserveSpot();   // la clase tiene 1 ocupado: el de esta reserva
 
         when(reservationRepository.findByIdForUpdate(RESERVATION_ID)).thenReturn(Optional.of(reservation));

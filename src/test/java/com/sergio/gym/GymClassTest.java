@@ -4,6 +4,7 @@ package com.sergio.gym;
 
 import com.sergio.gym.domain.exceptions.ClassFullException;
 import com.sergio.gym.domain.models.GymClass;
+import com.sergio.gym.domain.valueobjects.Capacity;
 import org.junit.jupiter.api.Test;
 
 import java.util.UUID;
@@ -16,7 +17,7 @@ class GymClassTest {
 
     @Test
     void reserveSpotIncreasesOccupiedSpots() {
-        GymClass gymClass = new GymClass(CLASS_ID, "Spinning", 2);
+        GymClass gymClass = new GymClass(CLASS_ID, "Spinning", new Capacity(2));
 
         gymClass.reserveSpot();
 
@@ -26,7 +27,7 @@ class GymClassTest {
 
     @Test
     void cannotReserveSpotWhenClassIsFull() {
-        GymClass gymClass = new GymClass(CLASS_ID, "Spinning", 1);
+        GymClass gymClass = new GymClass(CLASS_ID, "Spinning", new Capacity(1));
         gymClass.reserveSpot();
 
         assertThrows(ClassFullException.class, gymClass::reserveSpot);
@@ -34,23 +35,23 @@ class GymClassTest {
 
     @Test
     void cannotReleaseSpotWhenClassIsEmpty() {
-        GymClass gymClass = new GymClass(CLASS_ID, "Spinning", 2);
+        GymClass gymClass = new GymClass(CLASS_ID, "Spinning", new Capacity(2));
 
         assertThrows(IllegalStateException.class, gymClass::releaseSpot);
     }
 
     @Test
     void cannotCreateWithZeroCapacity() {
-        assertThrows(IllegalArgumentException.class, () -> new GymClass(CLASS_ID, "Spinning", 0));
+        assertThrows(IllegalArgumentException.class, () -> new GymClass(CLASS_ID, "Spinning", new Capacity(0)));
     }
 
     @Test
     void cannotCreateWithoutName() {
-        assertThrows(IllegalArgumentException.class, () -> new GymClass(CLASS_ID, "  ", 10));
+        assertThrows(IllegalArgumentException.class, () -> new GymClass(CLASS_ID, "  ", new Capacity(10)));
     }
 
     @Test
     void cannotCreateWithoutId() {
-        assertThrows(IllegalArgumentException.class, () -> new GymClass(null, "Spinning", 10));
+        assertThrows(IllegalArgumentException.class, () -> new GymClass(null, "Spinning", new Capacity(10)));
     }
 }
