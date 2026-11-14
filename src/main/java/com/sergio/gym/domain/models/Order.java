@@ -14,27 +14,46 @@ import java.util.UUID;
 public class Order {
     private final UUID id;
     private final UUID memberId;
-    private List<OrderItem> items = new ArrayList<>();
+    private final List<OrderItem> items = new ArrayList<>();
     private OrderStatus status;
 
-    public Order(UUID id, UUID memberId) {
+    private Order(UUID id, UUID memberId, OrderStatus status, List<OrderItem> items) {
         if (id == null) {
             throw new IllegalArgumentException("id cannot be null");
         }
         if (memberId == null) {
             throw new IllegalArgumentException("memberId cannot be null");
         }
+        if (status == null) {
+            throw new IllegalArgumentException("Status must not be null");
+        }
+        if (items == null) {
+            throw new IllegalArgumentException("Items must not be null");
+        }
+        if (status == OrderStatus.PAID && items.isEmpty()) {
+            throw new IllegalArgumentException("A paid order must have at least one item");
+        }
         this.id = id;
         this.memberId = memberId;
-        this.status = OrderStatus.PENDING;
+        this.status = status;
+        this.items.addAll(items);
     }
+
+    public Order(UUID id, UUID memberId) {
+        this(id, memberId, OrderStatus.PENDING, List.of());
+    }
+
+    public static Order restore(UUID id, UUID memberId, OrderStatus status, List<OrderItem> items) {
+        return new Order(id, memberId, status, items);
+    }
+
 
     public void addItem(OrderItem item) {
         if (item == null) {
             throw new IllegalArgumentException("Item must not be null");
         }
        if (this.status == OrderStatus.PAID) {
-           throw new IllegalArgumentException("Cannot add an item to paid order");
+           throw new IllegalStateException("Cannot add an item to paid order");
        }
         items.add(item);
     }
@@ -48,6 +67,7 @@ public class Order {
         return new Price(total);
     }
 
+    // Alternativa con stream: mismo resultado que total()
     public Price totalStream() {
         BigDecimal sum = items.stream()
                 .map(item -> item.getPrice().value())

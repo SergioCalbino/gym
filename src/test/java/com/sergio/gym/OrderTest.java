@@ -7,6 +7,7 @@ import com.sergio.gym.domain.valueobjects.Price;
 import org.junit.jupiter.api.Test;
 
 import java.math.BigDecimal;
+import java.util.List;
 import java.util.UUID;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -87,5 +88,22 @@ class OrderTest {
 
         assertThrows(UnsupportedOperationException.class,
                 () -> order.getItems().add(item("Towel", "2000")));
+    }
+
+    @Test
+    void restoreKeepsStatusAndItems() {
+        OrderItem plan = item("Monthly plan", "30000");
+
+        Order order = Order.restore(ORDER_ID, MEMBER_ID, OrderStatus.PAID, List.of(plan));
+
+        assertEquals(OrderStatus.PAID, order.getStatus());
+        assertEquals(1, order.getItems().size());
+        assertEquals(new Price(new BigDecimal("30000")), order.total());
+    }
+
+    @Test
+    void cannotRestoreAPaidOrderWithoutItems() {
+        assertThrows(IllegalArgumentException.class,
+                () -> Order.restore(ORDER_ID, MEMBER_ID, OrderStatus.PAID, List.of()));
     }
 }
